@@ -5,12 +5,18 @@
   "main": "tailwind.config.js",
   "scripts": {
     "build": "tailwindcss -i ./input.css -o ./assets/output.css",
-    "build:styles": "tailwindcss -i ./input.css -o ./assets/output.css --watch"
+    "build:styles": "tailwindcss -i ./input.css -o ./assets/output.css --watch",
+    "build:js": "esbuild ./input.js --bundle --minify --outfile=./assets/output.js",
+    "build:js:watch": "esbuild ./input.js --bundle --outfile=./assets/output.js --watch"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.16",
+    "esbuild": "^0.27.2",
     "tailwindcss": "^4.1.16"
+  },
+  "dependencies": {
+    "sweetalert2": "^11.26.17"
   }
 }

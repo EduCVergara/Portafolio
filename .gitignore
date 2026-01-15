@@ -1,3 +1,4 @@
 node_modules/
 assets/output.css
+assets/output.js
 pnpm-lock.yaml

@@ -1,22 +1,24 @@
 {
   "name": "portafolio",
-  "version": "1.0.0",
-  "description": "Descripción y páginas de desarrollo",
-  "main": "tailwind.config.js",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
   "scripts": {
-    "build": "tailwindcss -i ./input.css -o ./assets/output.css",
-    "build:styles": "tailwindcss -i ./input.css -o ./assets/output.css --watch",
-    "build:js": "esbuild ./input.js --bundle --minify --outfile=./assets/output.js",
-    "build:js:watch": "esbuild ./input.js --bundle --outfile=./assets/output.js --watch"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@tailwindcss/cli": "^4.1.16",
-    "esbuild": "^0.27.2",
-    "tailwindcss": "^4.1.16"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "sweetalert2": "^11.26.17"
+    "framer-motion": "^12.0.6",
+    "lucide-react": "^0.474.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "sweetalert2": "^11.15.10"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.3",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "tailwindcss": "^4.0.3",
+    "vite": "^6.0.5"
   }
 }

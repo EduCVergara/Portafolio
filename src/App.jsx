@@ -244,7 +244,7 @@ export default function App() {
             <div className="absolute -inset-6 bg-linear-to-r from-blue-600 to-purple-700 rounded-5xl blur-2xl opacity-30 group-hover:opacity-50 transition-all duration-500 animate-pulse" />
             <div className="relative glass-card p-4 rounded-4xl animate-float">
               <img 
-                src="assets/Yo-2026.webp" 
+                src="/Yo-2026.webp" 
                 alt="Eduardo" 
                 className="w-[280px] h-[350px] lg:w-[300px] lg:h-[380px] object-cover rounded-3xl"
               />
@@ -403,7 +403,7 @@ export default function App() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 href={`mailto:${email}`}
-                className="px-10 py-5 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-4xl font-bold flex items-center gap-3 shadow-2xl shadow-blue-500/20"
+                className="px-10 py-5 bg-linear-to-r from-blue-600 to-blue-500 text-white rounded-4xl font-bold flex items-center gap-3 shadow-2xl shadow-blue-500/20"
               >
                 <Mail className="w-6 h-6" /> {t.contact.email}
               </motion.a>
@@ -422,7 +422,7 @@ export default function App() {
             className="flex-1 w-full max-w-xl"
           >
             <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-4xl blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+              <div className="absolute -inset-1 bg-linear-to-r from-blue-500 to-purple-600 rounded-4xl blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
               <div className="relative glass-card p-10 rounded-4xl border border-white/5 flex flex-col gap-6">
                  <div className="flex flex-col gap-2">
                     <span className="text-blue-400 font-mono text-sm uppercase tracking-widest">{lang === 'es' ? 'Email de Contacto' : 'Contact Email'}</span>
@@ -430,7 +430,7 @@ export default function App() {
                        <span className="text-lg font-medium text-slate-200 truncate pr-4">{email}</span>
                        <button 
                         onClick={copyEmail}
-                        className="p-3 rounded-xl bg-white/10 hover:bg-blue-500 text-white transition-all cursor-pointer flex-shrink-0"
+                        className="p-3 rounded-xl bg-white/10 hover:bg-blue-500 text-white transition-all cursor-pointer shrink-0"
                         title={t.contact.copy}
                        >
                          {copied ? <Check className="w-5 h-5 text-green-400" /> : <Copy className="w-5 h-5" />}
@@ -514,7 +514,7 @@ function ProjectCard({ project, index, viewText, lang }) {
 
       <div className="absolute right-0 bottom-0 pointer-events-none opacity-20 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-125 transform rotate-6">
         <svg className="w-40 h-40 fill-white" viewBox="0 0 24 24">
-            <use xlinkHref={`assets/sprite.svg#${project.icon}`} />
+            <use xlinkHref={`/sprite.svg#${project.icon}`} />
         </svg>
       </div>
 

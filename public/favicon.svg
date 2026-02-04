@@ -1,0 +1,15 @@
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path 
+    d="M25 20H80V32H40V44H70V56H40V68H80V80H25C22.2386 80 20 77.7614 20 75V25C20 22.2386 22.2386 20 25 20Z" 
+    fill="url(#logo-grad)" 
+  />
+  <rect x="18" y="20" width="4" height="60" rx="2" fill="#3b82f6" fillOpacity="0.8" />
+  <path d="M85 20H95V30" stroke="#3b82f6" strokeWidth="4" strokeLinecap="round" />
+  <path d="M85 80H95V70" stroke="#8b5cf6" strokeWidth="4" strokeLinecap="round" />
+  <defs>
+    <linearGradient id="logo-grad" x1="20" y1="20" x2="100" y2="80" gradientUnits="userSpaceOnUse">
+      <stop stopColor="#3b82f6" />
+      <stop offset="100%" stopColor="#8b5cf6" />
+    </linearGradient>
+  </defs>
+</svg>

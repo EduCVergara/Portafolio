@@ -244,10 +244,10 @@ export default function App() {
             <div className="absolute -inset-6 bg-linear-to-r from-blue-600 to-purple-700 rounded-5xl blur-2xl opacity-30 group-hover:opacity-50 transition-all duration-500 animate-pulse" />
             <div className="relative glass-card p-4 rounded-4xl animate-float">
               <picture>
-                <source srcSet="assets/Yo-2026.avif" type="image/avif" />
+                <source srcSet="/assets/Yo-2026.avif" type="image/avif" />
                 <img 
-                  src="assets/Yo-2026.webp" 
-                  alt="Eduardo" 
+                  src="/assets/Yo-2026.webp" 
+                  alt="Eduardo"
                   className="w-[280px] h-[350px] lg:w-[300px] lg:h-[380px] object-cover rounded-3xl"
                 />
               </picture>
@@ -517,7 +517,7 @@ function ProjectCard({ project, index, viewText, lang }) {
 
       <div className="absolute right-0 bottom-0 pointer-events-none opacity-20 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-125 transform rotate-6">
         <svg className="w-40 h-40 fill-white" viewBox="0 0 24 24">
-            <use xlinkHref={`assets/sprite.svg#${project.icon}`} />
+            <use xlinkHref={`/assets/sprite.svg#${project.icon}`} />
         </svg>
       </div>
 

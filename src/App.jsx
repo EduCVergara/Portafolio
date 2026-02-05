@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Github, Linkedin, Instagram, ExternalLink, ShieldCheck, Mail, ArrowRight, Code2, Cpu, Globe, Database, PenTool, Layout, Menu, X, Copy, Check } from 'lucide-react';
-import Swal from 'sweetalert2';
 
 const translations = {
   es: {
@@ -130,7 +129,8 @@ export default function App() {
   const t = translations[lang];
   const email = "e.constanciovergara@gmail.com";
 
-  const handleMeClick = () => {
+  const handleMeClick = async () => {
+    const { default: Swal } = await import('sweetalert2');
     Swal.fire({
       title: t.swal.title,
       text: t.swal.text,
@@ -148,10 +148,21 @@ export default function App() {
     setLang(prev => prev === 'es' ? 'en' : 'es');
   };
 
-  const copyEmail = () => {
+  const copyEmail = async () => {
     navigator.clipboard.writeText(email);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    const { default: Swal } = await import('sweetalert2');
+    Swal.fire({
+      title: t.contact.copied,
+      icon: "success",
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      background: '#0f172a',
+      color: '#fff',
+    });
+    setTimeout(() => setCopied(false), 3000);
   };
 
   return (
@@ -284,7 +295,7 @@ export default function App() {
               </AnimatePresence>
             </h1>
             <p className="text-lg lg:text-xl text-slate-400 max-w-xl mb-10 leading-relaxed text-balance whitespace-pre-line min-h-[4em]">
-              <TypewriterText text={t.hero.desc} key={t.hero.desc} speed={0.015} />
+              <TypewriterText text={t.hero.desc} key={t.hero.desc} speed={15} />
             </p>
             
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
@@ -347,7 +358,7 @@ export default function App() {
               <TypewriterText text={t.skills.title} key={`${lang}-skills-title`} />
             </h2>
             <p className="text-slate-400 text-base md:text-lg mt-2">
-              <TypewriterText text={t.skills.subtitle} key={`${lang}-skills-subtitle`} speed={0.02} />
+              <TypewriterText text={t.skills.subtitle} key={`${lang}-skills-subtitle`} speed={20} />
             </p>
           </div>
           <div className="h-px bg-slate-800 flex-1 md:ml-12 w-full hidden md:block" />
@@ -441,7 +452,7 @@ export default function App() {
                     </div>
                  </div>
                  <p className="text-slate-400 leading-relaxed text-balance">
-                    <TypewriterText text={t.contact.desc} key={`${lang}-contact-desc`} speed={0.01} />
+                    <TypewriterText text={t.contact.desc} key={`${lang}-contact-desc`} speed={10} />
                  </p>
               </div>
             </div>
@@ -468,24 +479,26 @@ export default function App() {
   );
 }
 
-function TypewriterText({ text, speed = 0.03 }) {
-  return (
-    <motion.span>
-      {text.split("").map((char, i) => (
-        <motion.span
-          key={i}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{
-            duration: 0.01,
-            delay: i * speed,
-          }}
-        >
-          {char}
-        </motion.span>
-      ))}
-    </motion.span>
-  );
+function TypewriterText({ text, speed = 20 }) {
+  const [displayText, setDisplayText] = useState("");
+  
+  useEffect(() => {
+    let currentText = "";
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < text.length) {
+        currentText += text[i];
+        setDisplayText(currentText);
+        i++;
+      } else {
+        clearInterval(interval);
+      }
+    }, speed);
+    
+    return () => clearInterval(interval);
+  }, [text, speed]);
+
+  return <span>{displayText}</span>;
 }
 
 function ProjectCard({ project, index, viewText, lang }) {
@@ -511,7 +524,7 @@ function ProjectCard({ project, index, viewText, lang }) {
            <TypewriterText text={project.title} key={`${lang}-p-title-${index}`} />
         </h3>
         <p className="text-white/70 text-sm mt-2 font-medium max-w-[90%]">
-          <TypewriterText text={project.desc} key={`${lang}-p-desc-${index}`} speed={0.01} />
+          <TypewriterText text={project.desc} key={`${lang}-p-desc-${index}`} speed={10} />
         </p>
       </div>
 

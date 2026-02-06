@@ -48,6 +48,33 @@ const translations = {
     },
     footer: {
       copy: "Diseñado por: Eduardo Andrés Constancio Vergara"
+    },
+    labs: {
+      title: "Laboratorio Interactivo",
+      subtitle: "Prueba lógica de negocio en tiempo real",
+      demoTitle: "Mini-POS Sistema",
+      demoDesc: "Simulación de punto de venta con reactividad total.",
+      products: "Productos Disponibles",
+      cart: "Carrito de Compras",
+      total: "Total a Pagar",
+      tax: "Impuesto (19% IVA)",
+      print: "Simular Boleta",
+      empty: "El carrito está vacío",
+      viewCode: "Ver Código React",
+      viewDemo: "Ver Demo Interactiva",
+      add: "Agregar",
+      premiumLaptop: "Portátil Premium",
+      mecanicalKeyboard: "Teclado Mecánico",
+      wirelessMouse: "Mouse Inalámbrico",
+      triageTitle: "Simulador de Triage",
+      integraTitle: "Hub de Integraciones",
+      triageLabel: "Reporte de Bug",
+      status: "Estado",
+      accept: "Aceptar",
+      duplicate: "Marcar Duplicado",
+      decline: "Declinar",
+      bugReport: "Usuarios no pueden iniciar sesión por un límite de intentos inesperado.",
+      bugReportInfo: "#342 abierto hace 2h por",
     }
   },
   en: {
@@ -95,6 +122,33 @@ const translations = {
     },
     footer: {
       copy: "Designed by: Eduardo Andrés Constancio Vergara"
+    },
+    labs: {
+      title: "Interactive Labs",
+      subtitle: "Test real-time business logic",
+      demoTitle: "Mini-POS System",
+      demoDesc: "Point of Sale simulation with full reactivity.",
+      products: "Available Products",
+      cart: "Shopping Cart",
+      total: "Total to Pay",
+      tax: "Tax (VAT)",
+      print: "Simulate Receipt",
+      empty: "Cart is empty",
+      viewCode: "View React Code",
+      viewDemo: "View Interactive Demo",
+      add: "Add",
+      premiumLaptop: "Premium Laptop",
+      mecanicalKeyboard: "Mechanical Keyboard",
+      wirelessMouse: "Wireless Mouse",
+      triageTitle: "Triage Simulator",
+      integraTitle: "Integration Hub",
+      triageLabel: "Bug Report",
+      status: "Status",
+      accept: "Accept",
+      duplicate: "Mark Duplicate",
+      decline: "Decline",
+      bugReport: "Users report unexpected rate limiting on login",
+      bugReportInfo: "#342 opened 2h ago by",
     }
   }
 };
@@ -147,6 +201,31 @@ export default function App() {
   const toggleLang = () => {
     setLang(prev => prev === 'es' ? 'en' : 'es');
   };
+
+  const [cart, setCart] = useState([]);
+  const products = [
+    { id: 1, name: t.labs.premiumLaptop, price: 1200, icon: <Layout className="w-4 h-4" /> },
+    { id: 2, name: t.labs.mecanicalKeyboard, price: 150, icon: <Cpu className="w-4 h-4" /> },
+    { id: 3, name: t.labs.wirelessMouse, price: 80, icon: <Globe className="w-4 h-4" /> }
+  ];
+
+  const addToCart = (product) => {
+    setCart([...cart, { ...product, cartId: Date.now() }]);
+  };
+
+  const removeFromCart = (cartId) => {
+    setCart(cart.filter(item => item.cartId !== cartId));
+  };
+
+  const subtotal = cart.reduce((acc, item) => acc + item.price, 0);
+  const tax = subtotal * 0.19;
+  const total = subtotal + tax;
+
+  const [showCode, setShowCode] = useState(false);
+  const [activeLab, setActiveLab] = useState('pos'); // 'pos', 'triage', 'integrations'
+  
+  const [triageStatus, setTriageStatus] = useState('pending');
+  const [isTriageMenuOpen, setIsTriageMenuOpen] = useState(false);
 
   const copyEmail = async () => {
     navigator.clipboard.writeText(email);
@@ -315,6 +394,332 @@ export default function App() {
               </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Interactive Lab Section */}
+      <section id="lab" className="py-20 px-8 max-w-6xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 gap-6"
+        >
+          <div className="flex flex-col">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+              <TypewriterText text={t.labs.title} key={`${lang}-labs-title`} />
+            </h2>
+            <p className="text-slate-400 mt-2">
+              <TypewriterText text={t.labs.subtitle} key={`${lang}-labs-sub`} speed={20} />
+            </p>
+          </div>
+          
+          <div className="flex flex-wrap items-center gap-3">
+            {[
+              { id: 'pos', label: 'POS', icon: <Database className="w-4 h-4" /> },
+              { id: 'triage', label: 'Triage', icon: <Check className="w-4 h-4" /> },
+              { id: 'integrations', label: 'Hub', icon: <Globe className="w-4 h-4" /> }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveLab(tab.id)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all cursor-pointer ${
+                  activeLab === tab.id 
+                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20' 
+                  : 'glass-card text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                {tab.icon} {tab.label}
+              </button>
+            ))}
+            <div className="w-px h-6 bg-slate-800 mx-2 hidden sm:block" />
+            <motion.button 
+              whileHover={{ scale: 1.05, borderColor: 'rgba(59, 130, 246, 0.5)' }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setShowCode(!showCode)}
+              className="px-5 py-2 glass-card rounded-xl text-sm font-semibold flex items-center gap-2 transition-colors cursor-pointer"
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={showCode ? 'code' : 'demo'}
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex items-center gap-2"
+                >
+                  <Code2 className="w-4 h-4 text-blue-400" />
+                  {showCode ? t.labs.viewDemo : t.labs.viewCode}
+                </motion.div>
+              </AnimatePresence>
+            </motion.button>
+          </div>
+        </motion.div>
+
+        <div className="relative min-h-[500px]">
+          <AnimatePresence mode="wait">
+            {showCode ? (
+              <motion.div
+                key="code"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="glass-card p-2 rounded-3xl border-white/5 overflow-hidden"
+              >
+                <div className="bg-slate-950 p-6 rounded-2xl font-mono text-sm overflow-x-auto text-blue-300">
+                  <pre>
+                    <code>{activeLab === 'pos' ? `// React Logic/Logica en React (Simplified/Simplificada)
+const [cart, setCart] = useState([]);
+
+const addToCart = (product) => {
+  setCart([...cart, { ...product, cartId: Date.now() }]);
+};
+
+const subtotal = cart.reduce((acc, item) => 
+  acc + item.price, 0
+);
+const tax = subtotal * 0.19;
+const total = subtotal + tax;
+
+// Render logic/Logica de renderizado
+<button onClick={() => addToCart(product)}>
+  {t.labs.add}
+</button>` : activeLab === 'triage' ? `// Framer Motion Menu (Linear Style)
+<AnimatePresence>
+  {isOpen && (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9, y: -10 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.9, y: -10 }}
+    >
+      {options.map(opt => <Option key={opt} />)}
+    </motion.div>
+  )}
+</AnimatePresence>` : `// Clerk Style Spotlight Hover
+const [mPos, setMPos] = useState({ x: 0, y: 0 });
+
+const handleMouseMove = (e) => {
+  const rect = e.currentTarget.getBoundingClientRect();
+  setMPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+};
+
+<div onMouseMove={handleMouseMove}>
+  <div style={{ background: \`radial-gradient(...) at \${mPos.x}px \${mPos.y}px\` }} />
+</div>`}</code>
+                  </pre>
+                </div>
+              </motion.div>
+            ) : activeLab === 'pos' ? (
+              <motion.div
+                key="pos-demo"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+              >
+                {/* Product Selection */}
+                <div className="glass-card p-8 rounded-3xl border-white/5">
+                  <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                    <Database className="w-5 h-5 text-blue-400" /> {t.labs.products}
+                  </h3>
+                  <div className="space-y-4">
+                    {products.map(p => (
+                      <div key={p.id} className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-blue-500/30 transition-all group">
+                        <div className="flex items-center gap-4">
+                          <div className="p-3 bg-blue-500/10 rounded-xl text-blue-400">
+                            {p.icon}
+                          </div>
+                          <div>
+                            <p className="font-bold text-slate-200">{p.name}</p>
+                            <p className="text-sm text-slate-400">${p.price}</p>
+                          </div>
+                        </div>
+                        <button 
+                          onClick={() => addToCart(p)}
+                          className="px-4 py-2 bg-blue-600 rounded-xl text-xs font-bold hover:bg-blue-500 transition-colors cursor-pointer"
+                        >
+                          {t.labs.add}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Shopping Cart / Receipt */}
+                <div className="glass-card p-8 rounded-3xl border-blue-500/20 bg-blue-500/5 flex flex-col">
+                  <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                    <Layout className="w-5 h-5 text-purple-400" /> {t.labs.cart}
+                  </h3>
+                  
+                  <div className="flex-1 overflow-y-auto max-h-[250px] space-y-3 mb-6 pr-2">
+                    {cart.length === 0 ? (
+                      <p className="text-slate-500 text-center py-10 italic">{t.labs.empty}</p>
+                    ) : (
+                      cart.map(item => (
+                        <motion.div 
+                          layout
+                          initial={{ scale: 0.8, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          key={item.cartId} 
+                          className="flex items-center justify-between p-3 bg-black/20 rounded-xl border border-white/5"
+                        >
+                          <span className="text-sm font-medium">{item.name}</span>
+                          <div className="flex items-center gap-4">
+                            <span className="text-sm font-mono text-blue-400">${item.price}</span>
+                            <button onClick={() => removeFromCart(item.cartId)} className="text-red-400 hover:text-red-300 transition-colors cursor-pointer">
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </motion.div>
+                      ))
+                    )}
+                  </div>
+
+                  <div className="border-t border-white/10 pt-6 space-y-2">
+                    <div className="flex justify-between text-sm text-slate-400">
+                      <span>Subtotal</span>
+                      <span>${subtotal.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm text-slate-400">
+                      <span>{t.labs.tax}</span>
+                      <span>${tax.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-xl font-bold text-white pt-2 border-t border-white/5">
+                      <span>Total</span>
+                      <span className="text-blue-400">${total.toFixed(2)}</span>
+                    </div>
+                  </div>
+
+                  <button 
+                    disabled={cart.length === 0}
+                    className="mt-6 w-full py-4 bg-linear-to-r from-blue-600 to-purple-600 rounded-2xl font-bold hover:shadow-lg hover:shadow-blue-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    onClick={() => {
+                      import('sweetalert2').then(m => {
+                        m.default.fire({
+                          title: lang === 'es' ? '¡Venta Realizada!' : 'Sale Completed!',
+                          text: lang === 'es' ? `Total cobrado: $${total.toFixed(2)}` : `Total charged: $${total.toFixed(2)}`,
+                          icon: 'success',
+                          background: '#0f172a',
+                          color: '#fff',
+                        });
+                        setCart([]);
+                      });
+                    }}
+                  >
+                    {t.labs.print}
+                  </button>
+                </div>
+              </motion.div>
+            ) : activeLab === 'triage' ? (
+              <motion.div
+                key="triage-demo"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="glass-card p-12 rounded-3xl border-white/5 min-h-[400px] flex items-center justify-center relative"
+              >
+                <div className="w-full max-w-sm">
+                  <p className="text-xs font-mono text-blue-400 mb-2 uppercase tracking-widest">{t.labs.triageLabel}</p>
+                  <div className="bg-slate-900/50 border border-white/10 rounded-2xl p-6 shadow-2xl relative overflow-visible">
+                    <h4 className="font-bold text-lg mb-1 leading-tight text-white/90">{t.labs.bugReport}</h4>
+                    <p className="text-sm text-slate-400 mb-6">{t.labs.bugReportInfo} <span className="text-blue-400"><a href="https://www.linkedin.com/in/educonstancio" target="_blank" rel="noopener">@educonstancio</a></span></p>
+                    
+                    <div className="relative">
+                      <button 
+                        onClick={() => setIsTriageMenuOpen(!isTriageMenuOpen)}
+                        className="flex items-center justify-between w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all cursor-pointer group"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`w-2 h-2 rounded-full ${triageStatus === 'pending' ? 'bg-yellow-500' : triageStatus === 'accepted' ? 'bg-green-500' : 'bg-red-500'} shadow-[0_0_8px_rgba(234,179,8,0.5)]`} />
+                          <span className="text-sm font-medium capitalize">{triageStatus}</span>
+                        </div>
+                        <Menu className="w-4 h-4 text-slate-500 group-hover:text-slate-300" />
+                      </button>
+
+                      <AnimatePresence>
+                        {isTriageMenuOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                            className="absolute z-20 left-0 right-0 top-full mt-2 bg-[#161b22] border border-white/10 rounded-xl shadow-2xl p-1 overflow-hidden"
+                          >
+                            {[
+                              { id: 'accepted', label: t.labs.accept, icon: <Check className="w-4 h-4" />, color: 'hover:bg-green-500/10 hover:text-green-400' },
+                              { id: 'duplicate', label: t.labs.duplicate, icon: <Copy className="w-4 h-4" />, color: 'hover:bg-blue-500/10 hover:text-blue-400' },
+                              { id: 'declined', label: t.labs.decline, icon: <X className="w-4 h-4" />, color: 'hover:bg-red-500/10 hover:text-red-400' }
+                            ].map((opt) => (
+                              <button
+                                key={opt.id}
+                                onClick={() => {
+                                  setTriageStatus(opt.id);
+                                  setIsTriageMenuOpen(false);
+                                }}
+                                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-400 transition-colors cursor-pointer ${opt.color}`}
+                              >
+                                {opt.icon} {opt.label}
+                              </button>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="integrations-demo"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="glass-card p-8 rounded-3xl border-white/5 min-h-[400px] flex flex-col items-center justify-center"
+                onMouseMove={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const x = e.clientX - rect.left;
+                  const y = e.clientY - rect.top;
+                  e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
+                  e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
+                }}
+                style={{
+                  background: 'radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(37, 99, 235, 0.08), transparent 40%)'
+                }}
+              >
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-2xl">
+                  {[
+                    { name: 'React', icon: <Code2 className="w-8 h-8" />, url: "https://react.dev", color: "rgba(97, 218, 251, 0.4)", text: "text-[#61DAFB]" },
+                    { name: 'Node.js', icon: <Cpu className="w-8 h-8" />, url: "https://nodejs.org", color: "rgba(51, 153, 51, 0.4)", text: "text-[#339933]" },
+                    { name: 'PostgreSQL', icon: <Database className="w-8 h-8" />, url: "https://www.postgresql.org", color: "rgba(51, 103, 145, 0.4)", text: "text-[#336791]" },
+                    { name: 'Netlify', icon: <Globe className="w-8 h-8" />, url: "https://www.netlify.com", color: "rgba(0, 199, 183, 0.4)", text: "text-[#00C7B7]" },
+                    { name: 'Framer', icon: <Layout className="w-8 h-8" />, url: "https://www.framer.com/motion/", color: "rgba(0, 85, 255, 0.4)", text: "text-[#0055FF]" },
+                    { name: 'GitHub', icon: <Github className="w-8 h-8" />, url: "https://github.com", color: "rgba(110, 84, 148, 0.4)", text: "text-[#6e5494]" }
+                  ].map((tech, i) => (
+                    <motion.a
+                      key={tech.name}
+                      href={tech.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ 
+                        scale: 1.05, 
+                        y: -5,
+                        borderColor: tech.color,
+                        boxShadow: `0 20px 40px -15px ${tech.color}`
+                      }}
+                      className="aspect-square glass-card rounded-2xl flex flex-col items-center justify-center gap-3 border-white/5 transition-all group overflow-hidden relative cursor-pointer"
+                    >
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: `radial-gradient(circle at center, ${tech.color}, transparent 70%)` }} />
+                      <div className={`text-slate-500 group-hover:${tech.text} transition-colors relative z-10`}>
+                        {tech.icon}
+                      </div>
+                      <span className="text-xs font-bold text-slate-500 group-hover:text-slate-200 transition-colors uppercase tracking-widest relative z-10">
+                        {tech.name}
+                      </span>
+                    </motion.a>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </section>
 

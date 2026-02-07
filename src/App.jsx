@@ -161,7 +161,7 @@ const projectMetadata = [
 ];
 
 const DigitalLogo = ({ className = "" }) => (
-  <svg viewBox="0 0 100 100" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 100 100" className={className} fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path d="M25 20H75V35H45V45H70V58H45V68H75V83H25V20Z" fill="currentColor" />
     <rect x="15" y="15" width="4" height="73" fill="url(#grad-logo)" fillOpacity="0.8" />
     <circle cx="27" cy="20" r="3" fill="url(#grad-logo)" />
@@ -275,8 +275,9 @@ export default function App() {
               animate={{ x: [0, 5, 0] }}
               transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
               className="flex items-center justify-center p-2 rounded-xl glass-card hover:border-blue-500/50 transition-colors cursor-pointer"
+              aria-label={lang === 'es' ? 'Cambiar idioma a Inglés' : 'Change language to Spanish'}
             >
-              <span className="text-2xl leading-none">
+              <span className="text-2xl leading-none" aria-hidden="true">
                 {lang === 'es' ? '🇨🇱' : '🇺🇸'}
               </span>
             </motion.button>
@@ -295,6 +296,8 @@ export default function App() {
             <button 
               className="p-2 text-slate-300 hover:text-white transition-colors cursor-pointer"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label={isMenuOpen ? (lang === 'es' ? 'Cerrar menú' : 'Close menu') : (lang === 'es' ? 'Abrir menú' : 'Open menu')}
+              aria-expanded={isMenuOpen}
             >
               {isMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
             </button>
@@ -337,8 +340,11 @@ export default function App() {
                 <source srcSet="/assets/Yo-2026.avif" type="image/avif" />
                 <img 
                   src="/assets/Yo-2026.webp" 
-                  alt="Eduardo"
+                  alt="Eduardo Constancio - Full Stack Developer"
                   className="w-[280px] h-[350px] lg:w-[300px] lg:h-[380px] object-cover rounded-3xl"
+                  loading="eager"
+                  width="300"
+                  height="380"
                 />
               </picture>
               <div className="absolute -bottom-4 -right-4 glass-card px-4 py-2 rounded-2xl flex items-center gap-2 border border-blue-500/30">
@@ -388,9 +394,9 @@ export default function App() {
               </motion.button>
               
               <div className="flex items-center gap-3">
-                <SocialIcon href="https://github.com/EduCVergara" icon={<Github />} />
-                <SocialIcon href="https://www.linkedin.com/in/educonstancio/" icon={<Linkedin />} />
-                <SocialIcon href="https://www.instagram.com/anzhem" icon={<Instagram />} />
+                <SocialIcon href="https://github.com/EduCVergara" icon={<Github />} label="GitHub" />
+                <SocialIcon href="https://www.linkedin.com/in/educonstancio/" icon={<Linkedin />} label="LinkedIn" />
+                <SocialIcon href="https://www.instagram.com/anzhem" icon={<Instagram />} label="Instagram" />
               </div>
             </div>
           </motion.div>
@@ -622,12 +628,14 @@ const handleMouseMove = (e) => {
                   <p className="text-xs font-mono text-blue-400 mb-2 uppercase tracking-widest">{t.labs.triageLabel}</p>
                   <div className="bg-slate-900/50 border border-white/10 rounded-2xl p-6 shadow-2xl relative overflow-visible">
                     <h4 className="font-bold text-lg mb-1 leading-tight text-white/90">{t.labs.bugReport}</h4>
-                    <p className="text-sm text-slate-400 mb-6">{t.labs.bugReportInfo} <span className="text-blue-400"><a href="https://www.linkedin.com/in/educonstancio" target="_blank" rel="noopener">@educonstancio</a></span></p>
+                    <p className="text-sm text-slate-400 mb-6">{t.labs.bugReportInfo} <span className="text-blue-400"><a href="https://www.linkedin.com/in/educonstancio" target="_blank" rel="noopener noreferrer">@educonstancio</a></span></p>
                     
                     <div className="relative">
                       <button 
                         onClick={() => setIsTriageMenuOpen(!isTriageMenuOpen)}
                         className="flex items-center justify-between w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all cursor-pointer group"
+                        aria-label={lang === 'es' ? 'Cambiar estado de triage' : 'Change triage status'}
+                        aria-expanded={isTriageMenuOpen}
                       >
                         <div className="flex items-center gap-3">
                           <div className={`w-2 h-2 rounded-full ${triageStatus === 'pending' ? 'bg-yellow-500' : triageStatus === 'accepted' ? 'bg-green-500' : 'bg-red-500'} shadow-[0_0_8px_rgba(234,179,8,0.5)]`} />
@@ -828,8 +836,8 @@ const handleMouseMove = (e) => {
               </motion.a>
               
               <div className="flex items-center gap-4">
-                <SocialIcon href="https://github.com/EduCVergara" icon={<Github />} />
-                <SocialIcon href="https://www.linkedin.com/in/educonstancio/" icon={<Linkedin />} />
+                <SocialIcon href="https://github.com/EduCVergara" icon={<Github />} label="GitHub" />
+                <SocialIcon href="https://www.linkedin.com/in/educonstancio/" icon={<Linkedin />} label="LinkedIn" />
               </div>
             </div>
           </div>
@@ -874,9 +882,9 @@ const handleMouseMove = (e) => {
           </div>
           
           <div className="flex gap-6">
-            <SocialFooterIcon href="https://github.com/EduCVergara" icon={<Github className="w-5 h-5"/>} />
-            <SocialFooterIcon href="https://www.linkedin.com/in/educonstancio/" icon={<Linkedin className="w-5 h-5"/>} />
-            <SocialFooterIcon href="https://www.instagram.com/anzhem" icon={<Instagram className="w-5 h-5"/>} />
+            <SocialFooterIcon href="https://github.com/EduCVergara" icon={<Github className="w-5 h-5"/>} label="GitHub" />
+            <SocialFooterIcon href="https://www.linkedin.com/in/educonstancio/" icon={<Linkedin className="w-5 h-5"/>} label="LinkedIn" />
+            <SocialFooterIcon href="https://www.instagram.com/anzhem" icon={<Instagram className="w-5 h-5"/>} label="Instagram" />
           </div>
         </div>
       </footer>
@@ -968,26 +976,30 @@ function NavLink({ href, children, onClick }) {
   );
 }
 
-function SocialIcon({ href, icon }) {
+function SocialIcon({ href, icon, label }) {
   return (
     <motion.a 
       whileHover={{ y: -4, scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
       href={href} 
       target="_blank"
+      rel="noopener noreferrer"
       className="w-11 h-11 lg:w-12 lg:h-12 glass-card rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:border-blue-500/50 transition-all cursor-pointer"
+      aria-label={label}
     >
       {icon}
     </motion.a>
   );
 }
 
-function SocialFooterIcon({ href, icon }) {
+function SocialFooterIcon({ href, icon, label }) {
   return (
     <a 
       href={href} 
       target="_blank" 
+      rel="noopener noreferrer"
       className="p-2 glass-card rounded-lg text-slate-400 hover:text-white hover:border-blue-500/30 transition-all cursor-pointer"
+      aria-label={label}
     >
       {icon}
     </a>
